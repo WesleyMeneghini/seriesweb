@@ -36,13 +36,30 @@ class BoxSeries extends Component {
                 console.log('Enviado com sucesso')
                 serie = await retorno.json()
                 console.log(serie)
-                this.setState({series: [...this.state.series, serie]})
+                this.setState({series: [serie, ...this.state.series ]})
             }else{
                 console.log('nao retornou status 201')
                 
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    deleta = async (id) =>{
+        const seriesAtual = this.state.series
+        const params = {
+            method : 'DELETE',
+
+        }
+        const retorno = await fetch(`http://localhost:3000/series/${id}`, params)
+
+        if(retorno.status === 204) {
+            this.setState({
+                series: seriesAtual.filter((serie) => {
+                    return serie.id !== id
+                })
+            })
         }
     }
  
@@ -54,7 +71,7 @@ class BoxSeries extends Component {
                         <FormularioSeries enviaDados={this.enviaDados}/>
                     </div>
                     <div className="col-md-8">
-                        <TabelaSeries series={this.state.series}/>
+                        <TabelaSeries series={this.state.series} deleta={this.deleta} />
                     </div>
                 </div>
             </div>
