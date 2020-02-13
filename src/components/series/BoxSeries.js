@@ -48,10 +48,17 @@ class BoxSeries extends Component {
  
     render() {
         return(
-            <div>
-                <FormularioSeries enviaDados={this.enviaDados}/>
-                <TabelaSeries series={this.state.series}/>
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-4">
+                        <FormularioSeries enviaDados={this.enviaDados}/>
+                    </div>
+                    <div className="col-md-8">
+                        <TabelaSeries series={this.state.series}/>
+                    </div>
+                </div>
             </div>
+
         )
     }
 } 
