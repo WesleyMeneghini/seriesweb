@@ -37,7 +37,11 @@ const ListaSeries = (props) => {
                                     }}>
                                     Delete
                                 </button>
-                                <button className="btn btn-sm  btn-outline-warning ">
+                                <button 
+                                    className="btn btn-sm  btn-outline-warning "
+                                    onClick={() => {
+                                        props.consulta(serie)
+                                    }}>
                                     Editar
                                 </button>
                             </div>
@@ -52,17 +56,18 @@ const ListaSeries = (props) => {
 
 class TabelaSeries extends Component {
 
-    
-
     render() {
-        const { series, deleta } = this.props
+        const { series, deleta, consulta } = this.props;
         return(
             <div className="card">
                 <div className="card-header">
                     <h5>Lista de Séries</h5>
                 </div>
                 
-                <ListaSeries series={series} deleta={deleta}/>
+                <ListaSeries 
+                    series={series} 
+                    deleta={deleta}
+                    consulta={consulta} />
 
             </div>
         )

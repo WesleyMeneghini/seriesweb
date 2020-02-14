@@ -4,20 +4,14 @@ class FormularioSeries extends Component {
 
     constructor() {
         super()
-        this.stateInicial = {
-            nome: '',
-            ano_lancamento: '',
-            temporadas: '',
-            sinopse: '',
-        }
-
-        this.state = this.stateInicial
     }
 
     inputHandler = (e) => {
     
         const { name, value } = e.target;
-        this.setState({[name]: value})
+        this.props.inputHandler(name, value)
+
+        // this.setState({[name]: value})
 
     }
 
@@ -28,6 +22,7 @@ class FormularioSeries extends Component {
     }
     
     render() {
+        const { serie } = this.props;
         return (
             <div className="card">
                 <div className="card-header">
@@ -43,7 +38,7 @@ class FormularioSeries extends Component {
                                 type="text"
                                 id="nome"
                                 name="nome"
-                                value={this.state.nome}
+                                value={serie.nome}
                                 onChange={this.inputHandler}
                             />
 
@@ -53,7 +48,7 @@ class FormularioSeries extends Component {
                                 type="number"
                                 id="ano_lancamento"
                                 name="ano_lancamento"
-                                value={this.state.ano_lancamento}
+                                value={serie.ano_lancamento}
                                 onChange={this.inputHandler}
                             />
 
@@ -63,7 +58,7 @@ class FormularioSeries extends Component {
                                 type="text"
                                 id="temporadas"
                                 name="temporadas"
-                                value={this.state.temporadas}
+                                value={serie.temporadas}
                                 onChange={this.inputHandler}
                             />
 
@@ -73,7 +68,7 @@ class FormularioSeries extends Component {
                                 type="text"
                                 id="sinopse"
                                 name="sinopse"
-                                value={this.state.sinopse}
+                                value={serie.sinopse}
                                 onChange={this.inputHandler}
                             ></textarea>
 
