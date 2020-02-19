@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PubSub from 'pubsub-js';
 
 class FormularioSeries extends Component {
 
@@ -12,6 +13,10 @@ class FormularioSeries extends Component {
         }
 
         this.state = this.stateInicial
+
+        PubSub.subscribe('editing', (msg, serie) =>  {
+            this.setState(serie)
+        })
     }
 
     inputHandler = (e) => {
