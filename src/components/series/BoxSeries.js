@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PubSub from 'pubsub-js';
 
 import FormularioSeries from './FormularioSeries'
 import TabelaSeries from './TabelaSeries'
@@ -20,26 +21,37 @@ class BoxSeries extends Component {
 
     enviaDados = async (serie) => {
 
+        // let { serie } = this.state;
+        const method = serie.id ? 'PUT' : 'POST';
+        // console.log(serie)
+
         const params = {
-            method: 'POST',
+            method,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(serie)
         }
-
+        const urlParams = serie.id || '';
         try {
-            const retorno = await fetch('http://localhost:3000/series', params)
-            console.log(retorno)
+            const retorno = await fetch(`http://localhost:3000/series/${urlParams}`, params);
+            // console.log(retorno)
+            console.log('Enviado com sucesso')
+            serie = await retorno.json()
             if(retorno.status === 201) {
-                console.log('Enviado com sucesso')
-                serie = await retorno.json()
-                console.log(serie)
-                this.setState({series: [serie, ...this.state.series ]})
-            }else{
-                console.log('nao retornou status 201')
-                
+                // console.log(serie)
+                return this.setState({
+                    series: [serie, ...this.state.series ],
+                    serie: this.novaSerie,
+                })
+            }
+            if( retorno.status === 200 ) {
+                return this.setState({
+                    series: this.state.series.map(s => s.id == serie.id ? serie : s),
+                    serie: this.novaSerie,
+                })
+
             }
         } catch (error) {
             console.log(error)
