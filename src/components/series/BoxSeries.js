@@ -3,6 +3,7 @@ import PubSub from 'pubsub-js';
 
 import FormularioSeries from './FormularioSeries'
 import TabelaSeries from './TabelaSeries'
+import { getToken } from '../../services/auth-service'
 
 class BoxSeries extends Component {
 
@@ -14,7 +15,12 @@ class BoxSeries extends Component {
     }
     
     async componentDidMount(){
-        const resposta = await fetch('http://localhost:3000/series')
+        const params = {
+            headers: {
+                authorization: getToken(),
+            }
+        }
+        const resposta = await fetch('http://localhost:3000/series', params)
         const series = await resposta.json()
         this.setState({series: series})
     }
@@ -29,7 +35,8 @@ class BoxSeries extends Component {
             method,
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization: getToken,
             },
             body: JSON.stringify(serie)
         }
@@ -62,7 +69,9 @@ class BoxSeries extends Component {
         const seriesAtual = this.state.series
         const params = {
             method : 'DELETE',
-
+            headers: {
+                authorization: getToken(),
+            },
         }
         const retorno = await fetch(`http://localhost:3000/series/${id}`, params)
 

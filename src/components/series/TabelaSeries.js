@@ -6,7 +6,9 @@ import './TabelaSeries.css'
 
 const ListaSeries = (props) => {
         
-    
+    if(props.series.erro){
+        return <h3> {props.series.erro}</h3>
+    }
 
     return(
         <div className="card-body card-body-flex">

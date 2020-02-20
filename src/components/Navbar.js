@@ -1,10 +1,24 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import { signOut } from '../services/auth-service'
 
 class Navbar extends Component {
 
-    render() {
+    constructor() {
+        super()
+        this.state = {
+            signOut: false,
+        }
+    }
 
+    // signOut = (e) => {
+    //     signOut();
+    // }
+
+    render() {
+        if(this.state.signOut){
+            return <Redirect to={'/login'}></Redirect>
+        }
         return(
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
                 <Link className="navbar-brand" to="/series">Series</Link>
@@ -26,8 +40,15 @@ class Navbar extends Component {
                     </ul>
                     <form className="form-inline my-2 my-lg-0">
                         <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
+                    <button 
+                        className="btn btn-outline-danger my-2 my-sm-0" 
+                        type="submit" 
+                        onClick={() => {
+                            signOut()
+                            this.setState({signOut: true})
+                        } } >Sair</button>
+
                 </div>
             </nav>
         )

@@ -1,6 +1,15 @@
 import React , { Component } from 'react';
 
+import { signIn } from '../services/auth-service';
 import './Login.css';
+
+const MsgError = (props) => (
+    props.msg ? (
+        <div className="alert alert-danger">
+            {props.msg}
+        </div>
+    ) : ('')
+)
 
 class Login extends Component {
 
@@ -9,6 +18,7 @@ class Login extends Component {
         this.state = {
             email: '',
             senha: '',
+            msgError: 'Erro fatal',
         }
     }
 
@@ -19,7 +29,6 @@ class Login extends Component {
 
     singIn = async (e) => {
         e.preventDefault()
-        console.log("tsete")
         const { email, senha } = this.state
         const params = {
             method: 'POST',
@@ -36,11 +45,21 @@ class Login extends Component {
         try {
             const retorno = await fetch('http://localhost:3000/auth/autenticar', params)
 
-            console.log(retorno)
+            if (retorno.status === 400) {
+                const erro = await retorno.json()
+				this.setState({msgError: erro.erro})
+            }
+
+            if (retorno.ok) {
+                const resposta = await retorno.json();
+                signIn(resposta);
+
+                this.props.history.push('/');
+            }
 
             const usuario = await retorno.json()
-
             console.log(usuario)
+
         } catch (error) {
             console.log(error)
         }
@@ -48,40 +67,44 @@ class Login extends Component {
 
     render(){
         return(
-            <div className="container">
-                <div classNome="wrapper fadeInDown">
-                    <div className="formContent">
+            <div className="body">
 
-                        <div classNome="fadeIn first">
-                        <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
+                <div className="container">
+                    <div classNome="wrapper fadeInDown">
+                        <div className="formContent">
+
+                            <div classNome="fadeIn first">
+                            <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
+                            </div>
+                            <MsgError msg={this.state.msgError} />
+
+                            <form  method="get" onSubmit={this.singIn}>
+                                <input 
+                                    type="text" 
+                                    id="email" 
+                                    classNome="fadeIn second" 
+                                    name="email" 
+                                    placeholder="email"
+                                    required autoFocus 
+                                    onChange={this.inputHandler} />
+
+                                <input 
+                                    type="text" 
+                                    id="senha" 
+                                    classNome="fadeIn third" 
+                                    name="senha" 
+                                    placeholder="senha" 
+                                    required autoFocus 
+                                    onChange={this.inputHandler} />
+
+                                <button type="submit" classNome="fadeIn fourth" value="Log In">Login</button>
+                            </form>
+
+                            <div id="formFooter">
+                                <a classNome="underlineHover" href="#">Forgot Password?</a>
+                            </div>
+
                         </div>
-
-                        <form  method="get" onSubmit={this.singIn}>
-                            <input 
-                                type="text" 
-                                id="login" 
-                                classNome="fadeIn second" 
-                                name="email" 
-                                placeholder="email"
-                                required autoFocus 
-                                onChange={this.inputHandler} />
-
-                            <input 
-                                type="text" 
-                                id="password" 
-                                classNome="fadeIn third" 
-                                name="senha" 
-                                placeholder="senha" 
-                                required autoFocus 
-                                onChange={this.inputHandler} />
-
-                            <button type="submit" classNome="fadeIn fourth" value="Log In">Login</button>
-                        </form>
-
-                        <div id="formFooter">
-                            <a classNome="underlineHover" href="#">Forgot Password?</a>
-                        </div>
-
                     </div>
                 </div>
             </div>
