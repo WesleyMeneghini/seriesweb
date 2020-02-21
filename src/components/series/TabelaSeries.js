@@ -5,9 +5,10 @@ import './TabelaSeries.css'
 
 
 const ListaSeries = (props) => {
-        
-    if(props.series.erro){
-        return <h3> {props.series.erro}</h3>
+    console.log(props.series.error)
+    // return <h1>Teste</h1>
+    if(props.series.error){
+        return <h3> {props.series.error}</h3>
     }
 
     return(
@@ -26,7 +27,15 @@ const ListaSeries = (props) => {
                             {serie.temporadas}
                             {serie.temporadas > 1 ? ' temporadas' : ' temporada'}
                             <br/>
-                            <a href="#">
+                            <a 
+                                href="#" 
+                                data-toggle="modal" 
+                                data-target="#exampleModalCenter"
+                                onClick={
+                                    () => {
+                                        PubSub.publish('detail', serie)
+                                    }
+                                } >
                                 Sinopse 
                             </a>
                             <br/>
@@ -60,12 +69,45 @@ const ListaSeries = (props) => {
 
 class TabelaSeries extends Component {
 
-    
+    constructor( ) {
+        super() 
+        this.state = {
+            serieDetalhe: '',
+        }
+        PubSub.subscribe('detail', (msg, serie) => {
+            this.setState({serieDetalhe: serie})
+        })
+    }
 
     render() {
         const { series, deleta } = this.props
+        console.log(series)
+
+        const { serieDetalhe } = this.state
+
         return(
             <div className="card">
+                <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalCenterTitle">{serieDetalhe.nome}</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <img src={'/logo192.png'} className="card-img"></img>
+                            {serieDetalhe.temporadas}<br></br>
+                            {serieDetalhe.ano_lancamento}
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="button" className="btn btn-primary">Save changes</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="card-header">
                     <h5>Lista de Séries</h5>
                 </div>

@@ -1,8 +1,23 @@
-const TOKEN_KEY = '@Series:token';
+import { doPublicRequest } from './baseapi-service'
 
-export const signIn = (usuario) => {
-    localStorage.setItem(TOKEN_KEY, JSON.stringify(usuario));
+const TOKEN_KEY = '@Series:token';
+const RESOURCE = 'auth/'
+
+export const signIn = async (usuario) => {
+
+    try {
+        const retorno =  await doPublicRequest(`${RESOURCE}autenticar/`, 'POST', usuario)
+
+        if (retorno.ok) {
+            usuario = await retorno.json()
+            localStorage.setItem(TOKEN_KEY, JSON.stringify(usuario)); 
+        }
+        return retorno
+    } catch (error) {
+        console.log(error)
+    }
 }
+
 export const signOut = () => {
     localStorage.removeItem(TOKEN_KEY);
 }

@@ -26,10 +26,11 @@ class FormularioSeries extends Component {
 
     }
 
-    enviaDados = (e) => {
+    enviaDados = async (e) => {
         e.preventDefault()
-        this.props.enviaDados(this.state)
+        await this.props.enviaDados(this.state)
         this.setState(this.stateInicial)
+        delete this.state.id
     }
     
     render() {

@@ -1,7 +1,7 @@
 import React , { Component } from 'react';
 
 import { signIn } from '../services/auth-service';
-import './Login.css';
+// import './Login.css';
 
 const MsgError = (props) => (
     props.msg ? (
@@ -28,41 +28,30 @@ class Login extends Component {
     }
 
     singIn = async (e) => {
-        e.preventDefault()
-        const { email, senha } = this.state
-        const params = {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email, 
-                senha,
-            })
-        }
-
+        console.log(this.state)
         try {
-            const retorno = await fetch('http://localhost:3000/auth/autenticar', params)
-
+        
+            e.preventDefault()
+            const usuario = this.state
+     
+            delete usuario.msgError
+    
+            const  retorno = await signIn(usuario)
+    
             if (retorno.status === 400) {
                 const erro = await retorno.json()
-				this.setState({msgError: erro.erro})
+                this.setState({msgError: erro.erro})
             }
-
+    
             if (retorno.ok) {
-                const resposta = await retorno.json();
-                signIn(resposta);
-
                 this.props.history.push('/');
             }
-
-            const usuario = await retorno.json()
-            console.log(usuario)
 
         } catch (error) {
             console.log(error)
         }
+        
+        
     }
 
     render(){

@@ -4,6 +4,7 @@ import PubSub from 'pubsub-js';
 import FormularioSeries from './FormularioSeries'
 import TabelaSeries from './TabelaSeries'
 import { getToken } from '../../services/auth-service'
+import { inserir, listar, atualizar, remover } from '../../services/series-service' 
 
 class BoxSeries extends Component {
 
@@ -15,39 +16,29 @@ class BoxSeries extends Component {
     }
     
     async componentDidMount(){
-        const params = {
-            headers: {
-                authorization: getToken(),
-            }
+
+        try {
+            const retorno = await listar()
+            const series = await retorno.json()
+            console.log(series)
+            this.setState({ series: series })
+        } catch (error) {
+            console.log(error)
         }
-        const resposta = await fetch('http://localhost:3000/series', params)
-        const series = await resposta.json()
-        this.setState({series: series})
+        
     }
 
     enviaDados = async (serie) => {
-
-        // let { serie } = this.state;
-        const method = serie.id ? 'PUT' : 'POST';
-        // console.log(serie)
-
-        const params = {
-            method,
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                authorization: getToken,
-            },
-            body: JSON.stringify(serie)
-        }
-        const urlParams = serie.id || '';
         try {
-            const retorno = await fetch(`http://localhost:3000/series/${urlParams}`, params);
-            // console.log(retorno)
-            console.log('Enviado com sucesso')
-            serie = await retorno.json()
+            let retorno = '';
+            if (serie.id) {
+                retorno = await atualizar(serie)
+            }else{
+                retorno = await inserir(serie)
+            }
+
+
             if(retorno.status === 201) {
-                // console.log(serie)
                 return this.setState({
                     series: [serie, ...this.state.series ],
                     serie: this.novaSerie,
@@ -60,21 +51,16 @@ class BoxSeries extends Component {
                 })
 
             }
+
         } catch (error) {
             console.log(error)
         }
     }
 
     deleta = async (id) =>{
-        const seriesAtual = this.state.series
-        const params = {
-            method : 'DELETE',
-            headers: {
-                authorization: getToken(),
-            },
-        }
-        const retorno = await fetch(`http://localhost:3000/series/${id}`, params)
-
+        const { seriesAtual }= this.state
+        const retorno = await remover(id)
+        console.log(retorno)
         if(retorno.status === 204) {
             this.setState({
                 series: seriesAtual.filter((serie) => {
