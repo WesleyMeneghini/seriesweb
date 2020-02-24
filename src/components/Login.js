@@ -56,48 +56,46 @@ class Login extends Component {
 
     render(){
         return(
-            <div className="body">
+            <div className="container mt-5">
+                <div className="text-center">
+                    <form className="form-signin" method="get" onSubmit={this.singIn}>
+                        <img className="mb-4 " src="/logo192.png" alt="" />
+                        <h1 className="h3 mb-3 font-weight-normal">
+                            Please sign in
+                        </h1>
+                        <label for="inputEmail" className="sr-only">
+                            Email address
+                        </label>
+                        <input 
+                            type="email" 
+                            id="inputEmail" 
+                            className="form-control mb-2" 
+                            name="email" 
+                            placeholder="Email address"
+                            required autoFocus 
+                            onChange={this.inputHandler} /> 
 
-                <div className="container">
-                    <div classNome="wrapper fadeInDown">
-                        <div className="formContent">
-
-                            <div classNome="fadeIn first">
-                            <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
-                            </div>
-                            <MsgError msg={this.state.msgError} />
-
-                            <form  method="get" onSubmit={this.singIn}>
-                                <input 
-                                    type="text" 
-                                    id="email" 
-                                    classNome="fadeIn second" 
-                                    name="email" 
-                                    placeholder="email"
-                                    required autoFocus 
-                                    onChange={this.inputHandler} />
-
-                                <input 
-                                    type="text" 
-                                    id="senha" 
-                                    classNome="fadeIn third" 
-                                    name="senha" 
-                                    placeholder="senha" 
-                                    required autoFocus 
-                                    onChange={this.inputHandler} />
-
-                                <button type="submit" classNome="fadeIn fourth" value="Log In">Login</button>
-                            </form>
-
-                            <div id="formFooter">
-                                <a classNome="underlineHover" href="#">Forgot Password?</a>
-                            </div>
-
+                        <label for="inputPassword" className="sr-only">
+                            Password
+                        </label>
+                        <input 
+                            type="password" 
+                            id="inputPassword" 
+                            className="form-control mb-2" 
+                            name="senha" 
+                            placeholder="Password" 
+                            required autoFocus 
+                            onChange={this.inputHandler} />
+                        <div className="checkbox mb-3">
+                            <label>
+                            <input type="checkbox" value="remember-me"></input> Remember me
+                            </label>
                         </div>
-                    </div>
+                        <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        <p className="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
+                    </form>
                 </div>
             </div>
-            
         )
     }
 }
