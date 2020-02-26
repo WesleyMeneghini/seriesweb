@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 import BoxSeries from '../components/series/BoxSeries';
 import Autores from '../components/Autores'

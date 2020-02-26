@@ -5,8 +5,8 @@
 }
 
 .card-serie .card-footer, .card-header {
-    font-size: 12px;
-    padding: 8px;
+    font-size: 14px;
+    padding: 12px;
 }
 
 .card-body-flex {
@@ -14,4 +14,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     padding: 10px;
+}
+
+.ml--2{
+    margin-left: -12px;
 }

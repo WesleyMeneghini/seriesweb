@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PubSub from 'pubsub-js';
 
+import './PreviewImage.css';
+
 class FormularioSeries extends Component {
 
     constructor() {
@@ -10,6 +12,8 @@ class FormularioSeries extends Component {
             ano_lancamento: '',
             temporadas: '',
             sinopse: '',
+            image: '',
+            file: '',
         }
 
         this.state = this.stateInicial
@@ -26,6 +30,22 @@ class FormularioSeries extends Component {
 
     }
 
+    _handleImageChange = (e) =>{
+        e.preventDefault();
+    
+        let reader = new FileReader();
+        let file = e.target.files[0];
+    
+        reader.onloadend = async () => {
+          await this.setState({
+            file: file,
+            image: reader.result
+          });
+        }
+    
+        reader.readAsDataURL(file)
+    }
+
     enviaDados = async (e) => {
         e.preventDefault()
         await this.props.enviaDados(this.state)
@@ -34,6 +54,20 @@ class FormularioSeries extends Component {
     }
     
     render() {
+        // console.log(this.state)
+
+        let { image } = this.state;
+        // console.log("------------------------")
+        // console.log(image)
+        let $imagePreview = null;
+        if (image !== '' ) {
+            $imagePreview = ( 
+                <div className="form-control imgPreview">
+                    <img src={image} alt={"Pre-visualizacao"} />
+                </div>);
+        } else {
+            // $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
+        }
         return (
             <div className="card">
                 <div className="card-header">
@@ -75,13 +109,24 @@ class FormularioSeries extends Component {
 
                             <label htmlFor="sinopse">sinopse</label>
                             <textarea
-                                className="form-control"
+                                className="form-control mb-2"
                                 type="text"
                                 id="sinopse"
                                 name="sinopse"
                                 value={this.state.sinopse}
                                 onChange={this.inputHandler}
                             ></textarea>
+
+                            <input 
+                                className="form-control mb-2" 
+                                type="file" 
+                                placeholder="Escolher foto"
+                                accept="image/png, image/jpeg"
+                                onChange={(e)=>this._handleImageChange(e)} />
+
+                            {/* <div className="form-control imgPreview"> */}
+                                {$imagePreview}
+                            {/* </div> */}
 
                             <button
                                 className="btn btn-success form-control mt-2"
@@ -90,6 +135,7 @@ class FormularioSeries extends Component {
                             </button>
                         </div>
                     </form>
+                    
                 </div>
             </div>
         )

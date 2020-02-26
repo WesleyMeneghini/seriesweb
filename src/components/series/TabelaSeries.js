@@ -5,8 +5,7 @@ import './TabelaSeries.css'
 
 
 const ListaSeries = (props) => {
-    console.log(props.series.error)
-    // return <h1>Teste</h1>
+
     if(props.series.error){
         return <h3> {props.series.error}</h3>
     }
@@ -14,6 +13,10 @@ const ListaSeries = (props) => {
     return(
         <div className="card-body card-body-flex">
             {props.series.map(serie => {
+                let image = serie.image;
+                if(serie.image === null || serie.image === ""){
+                    image = "/logo192.png";
+                }
                 return(
                     <div className="card card-serie" key={serie.id}>
                         <div className="card-header">
@@ -21,13 +24,14 @@ const ListaSeries = (props) => {
                             <h6 className="card-title text-muted mb-0">{serie.ano_lancamento}</h6>
                         </div> 
                         <div className="card-body">
-                            <img src="/logo192.png" className="card-img" alt='react'/>
+                            <img src={image} className="card-img" alt={serie.nome} />
                         </div>
                         <div className="card-footer">
                             {serie.temporadas}
                             {serie.temporadas > 1 ? ' temporadas' : ' temporada'}
                             <br/>
-                            <a 
+                            <button
+                                className="btn btn-link ml--2"
                                 href="#" 
                                 data-toggle="modal" 
                                 data-target="#exampleModalCenter"
@@ -37,7 +41,7 @@ const ListaSeries = (props) => {
                                     }
                                 } >
                                 Sinopse 
-                            </a>
+                            </button>
                             <br/>
                             <div className="text-center mt-2">
                                 <button 
@@ -81,13 +85,18 @@ class TabelaSeries extends Component {
 
     render() {
         const { series, deleta } = this.props
-        console.log(series)
 
         const { serieDetalhe } = this.state
 
+        let image = serieDetalhe.image;
+        if(serieDetalhe.image === null || serieDetalhe.image === ""){
+            image = "/logo192.png";
+        }
+
         return(
+            
             <div className="card">
-                <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                         <div className="modal-header">
@@ -97,13 +106,14 @@ class TabelaSeries extends Component {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <img src={'/logo192.png'} className="card-img"></img>
+                            <img src={image} alt={serieDetalhe.nome} className="card-img"></img>
                             {serieDetalhe.temporadas}<br></br>
-                            {serieDetalhe.ano_lancamento}
+                            {serieDetalhe.ano_lancamento}<br></br>
+                            {serieDetalhe.sinopse}
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
+                            {/* <button type="button" className="btn btn-primary">Save changes</button> */}
                         </div>
                         </div>
                     </div>

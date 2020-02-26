@@ -1,15 +1,17 @@
 import React , { Component } from 'react';
 
 import { signIn } from '../services/auth-service';
-// import './Login.css';
 
-const MsgError = (props) => (
-    props.msg ? (
+const MsgError = (props) => {
+    if(props.msgError === ''){
+        return ""
+    }
+    return(
         <div className="alert alert-danger">
-            {props.msg}
+            {props.msgError}
         </div>
-    ) : ('')
-)
+    )
+}
 
 class Login extends Component {
 
@@ -18,7 +20,7 @@ class Login extends Component {
         this.state = {
             email: '',
             senha: '',
-            msgError: 'Erro fatal',
+            msgError: '',
         }
     }
 
@@ -28,7 +30,7 @@ class Login extends Component {
     }
 
     singIn = async (e) => {
-        console.log(this.state)
+        // console.log(this.state)
         try {
         
             e.preventDefault()
@@ -56,44 +58,50 @@ class Login extends Component {
 
     render(){
         return(
-            <div className="container mt-5">
-                <div className="text-center">
-                    <form className="form-signin" method="get" onSubmit={this.singIn}>
-                        <img className="mb-4 " src="/logo192.png" alt="" />
-                        <h1 className="h3 mb-3 font-weight-normal">
-                            Please sign in
-                        </h1>
-                        <label for="inputEmail" className="sr-only">
-                            Email address
-                        </label>
-                        <input 
-                            type="email" 
-                            id="inputEmail" 
-                            className="form-control mb-2" 
-                            name="email" 
-                            placeholder="Email address"
-                            required autoFocus 
-                            onChange={this.inputHandler} /> 
+            <div className="container mt-5 " >
+                <div className="text-center row">
+                    <div className="col-md-2"></div>
+                    <div className="col-md-8">
+                        <form className="form-signin" method="get" onSubmit={this.singIn}>
+                            <img className="mb-4 " src="/logo192.png" alt="" />
+                            <h1 className="h3 mb-3 font-weight-normal">
+                                Please sign in
+                            </h1>
+                            <MsgError msgError={this.state.msgError} />
 
-                        <label for="inputPassword" className="sr-only">
-                            Password
-                        </label>
-                        <input 
-                            type="password" 
-                            id="inputPassword" 
-                            className="form-control mb-2" 
-                            name="senha" 
-                            placeholder="Password" 
-                            required autoFocus 
-                            onChange={this.inputHandler} />
-                        <div className="checkbox mb-3">
-                            <label>
-                            <input type="checkbox" value="remember-me"></input> Remember me
+                            <label className="sr-only">
+                                Email address
                             </label>
-                        </div>
-                        <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                        <p className="mt-5 mb-3 text-muted">&copy; 2019-2020</p>
-                    </form>
+                            <input 
+                                type="email" 
+                                id="inputEmail" 
+                                className="form-control mb-2" 
+                                name="email" 
+                                placeholder="Email address"
+                                required autoFocus 
+                                onChange={this.inputHandler} /> 
+
+                            <label className="sr-only">
+                                Password
+                            </label>
+                            <input 
+                                type="password" 
+                                id="inputPassword" 
+                                className="form-control mb-2" 
+                                name="senha" 
+                                placeholder="Password" 
+                                required autoFocus 
+                                onChange={this.inputHandler} />
+                            <div className="checkbox mb-3">
+                                <label>
+                                <input type="checkbox" value="remember-me"></input> Remember me
+                                </label>
+                            </div>
+                            <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                            <p className="mt-5 mb-3 text-muted">WesleyMeneghini&copy;2020</p>
+                        </form>
+                    </div>
+                    <div className="col-md-2"></div>
                 </div>
             </div>
         )

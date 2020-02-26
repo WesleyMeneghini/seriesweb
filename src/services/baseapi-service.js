@@ -22,7 +22,7 @@ export const doRequest = async (resource, method, dados='', urlParams='') => {
 
 
 export const doPublicRequest = async (resource, method, dados='', urlParams='') => {
-    console.log(method)
+    // console.log(method)
     const params = {
         method: method,
         headers: {
