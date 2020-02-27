@@ -3,6 +3,19 @@ import PubSub from 'pubsub-js';
 
 import './PreviewImage.css';
 
+const SelectGeneros = (props) => {
+    return(
+            props.generos.map( (genero) => {
+                return(
+                    <option key={genero.codigo} value={genero.codigo}>
+                        {genero.nome}
+                    </option>
+                )
+            } )
+        )
+
+}
+
 class FormularioSeries extends Component {
 
     constructor() {
@@ -13,6 +26,7 @@ class FormularioSeries extends Component {
             temporadas: '',
             sinopse: '',
             image: '',
+            id_genero: 0,
             file: '',
         }
 
@@ -68,6 +82,9 @@ class FormularioSeries extends Component {
         } else {
             // $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
         }
+
+        const { generos } = this.props
+
         return (
             <div className="card">
                 <div className="card-header">
@@ -77,45 +94,61 @@ class FormularioSeries extends Component {
                     <form method="post" onSubmit={this.enviaDados}>
                         <div className="form-group">
 
-                            <label htmlFor="name">Nome</label>
-                            <input 
-                                className="form-control mb-2"
-                                type="text"
-                                id="nome"
-                                name="nome"
-                                value={this.state.nome}
-                                onChange={this.inputHandler}
-                            />
+                            <div className="form-group">
+                                <label htmlFor="name">Nome</label>
+                                <input 
+                                    className="form-control mb-1"
+                                    type="text"
+                                    id="nome"
+                                    name="nome"
+                                    value={this.state.nome}
+                                    onChange={this.inputHandler}
+                                />
+                            </div>
 
-                            <label htmlFor="ano_lancamento">ano_lancamento</label>
-                            <input 
-                                className="form-control mb-2"
-                                type="number"
-                                id="ano_lancamento"
-                                name="ano_lancamento"
-                                value={this.state.ano_lancamento}
-                                onChange={this.inputHandler}
-                            />
+                            <div className="form-group">
+                                <label htmlFor="ano_lancamento">ano_lancamento</label>
+                                <input 
+                                    className="form-control "
+                                    type="number"
+                                    id="ano_lancamento"
+                                    name="ano_lancamento"
+                                    value={this.state.ano_lancamento}
+                                    onChange={this.inputHandler}
+                                />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="genero">Genero</label>
+                                <select name="id_genero" className="form-control mb-1" onClick={this.inputHandler}>
+                                    <option value="">Genero</option>
+                                    <SelectGeneros generos={generos}/>
+                                </select>
+                            </div>
 
-                            <label htmlFor="temporadas">temporada</label>
-                            <input 
-                                className="form-control  mb-2"
-                                type="text"
-                                id="temporadas"
-                                name="temporadas"
-                                value={this.state.temporadas}
-                                onChange={this.inputHandler}
-                            />
+                            <div className="form-group">
+                                <label htmlFor="temporadas">temporada</label>
+                                <input 
+                                    className="form-control  mb-1"
+                                    type="text"
+                                    id="temporadas"
+                                    name="temporadas"
+                                    value={this.state.temporadas}
+                                    onChange={this.inputHandler}
+                                />
+                            </div>
 
-                            <label htmlFor="sinopse">sinopse</label>
-                            <textarea
-                                className="form-control mb-2"
-                                type="text"
-                                id="sinopse"
-                                name="sinopse"
-                                value={this.state.sinopse}
-                                onChange={this.inputHandler}
-                            ></textarea>
+                            <div className="form-group">
+                                <label htmlFor="sinopse">sinopse</label>
+                                <textarea
+                                    className="form-control mb-1"
+                                    type="text"
+                                    id="sinopse"
+                                    name="sinopse"
+                                    value={this.state.sinopse}
+                                    onChange={this.inputHandler}
+                                ></textarea>
+                            </div>
 
                             <input 
                                 className="form-control mb-2" 

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 
 import FormularioSeries from './FormularioSeries'
 import TabelaSeries from './TabelaSeries'
-import { inserir, listar, atualizar, remover } from '../../services/series-service' 
+import { inserir, listar, atualizar, remover } from '../../services/series-service'
+import { listarGeneros } from '../../services/generos-dervice' 
 
 class BoxSeries extends Component {
 
@@ -10,15 +11,19 @@ class BoxSeries extends Component {
         super()
         this.state = {
             series: [],
+            generos: []
         }
     }
     
     async componentDidMount(){
 
         try {
-            const retorno = await listar()
+            let retorno = await listar()
             const series = await retorno.json()
             this.setState({ series: series })
+            retorno = await listarGeneros()
+            const generos = await retorno.json()
+            this.setState({ generos: generos })
         } catch (error) {
             console.log(error)
         }
@@ -84,10 +89,10 @@ class BoxSeries extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-md-4">
-                        <FormularioSeries enviaDados={this.enviaDados}/>
+                        <FormularioSeries generos={this.state.generos} enviaDados={this.enviaDados}/>
                     </div>
                     <div className="col-md-8">
-                        <TabelaSeries series={this.state.series} deleta={this.deleta} />
+                        <TabelaSeries series={this.state.series} deleta={this.deleta} generos={this.state.generos}/>
                     </div>
                 </div>
             </div>

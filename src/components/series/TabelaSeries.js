@@ -17,6 +17,12 @@ const ListaSeries = (props) => {
                 if(serie.image === null || serie.image === ""){
                     image = "/logo192.png";
                 }
+                let genero = props.generos.filter(genero => genero.codigo == serie.id_genero)
+                genero = genero[0]
+                let nome = "";
+                if(genero != undefined)
+                    nome = genero.nome
+
                 return(
                     <div className="card card-serie" key={serie.id}>
                         <div className="card-header">
@@ -27,6 +33,8 @@ const ListaSeries = (props) => {
                             <img src={image} className="card-img" alt={serie.nome} />
                         </div>
                         <div className="card-footer">
+                            {nome}
+                            <br/>
                             {serie.temporadas}
                             {serie.temporadas > 1 ? ' temporadas' : ' temporada'}
                             <br/>
@@ -84,7 +92,7 @@ class TabelaSeries extends Component {
     }
 
     render() {
-        const { series, deleta } = this.props
+        const { series, deleta, generos } = this.props
 
         const { serieDetalhe } = this.state
 
@@ -122,7 +130,7 @@ class TabelaSeries extends Component {
                     <h5>Lista de Séries</h5>
                 </div>
                 
-                <ListaSeries series={series} deleta={deleta}/>
+                <ListaSeries series={series} deleta={deleta} generos={generos}/>
 
             </div>
         )
