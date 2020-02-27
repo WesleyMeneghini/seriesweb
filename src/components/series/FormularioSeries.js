@@ -12,7 +12,6 @@ class FormularioSeries extends Component {
             ano_lancamento: '',
             temporadas: '',
             sinopse: '',
-            image: '',
             file: '',
         }
 
@@ -24,9 +23,21 @@ class FormularioSeries extends Component {
     }
 
     inputHandler = (e) => {
+
+        if(e.target.files){
+            // console.log(e.target.files[0])
+            this.setState({
+                file: e.target.files[0]
+            })
+        }else{
+            const { name, value } = e.target;
+            this.setState({[name]: value})
+        }
+        // console.log(this.state)
+        return
     
-        const { name, value } = e.target;
-        this.setState({[name]: value})
+        // const { name, value } = e.target;
+        // this.setState({[name]: value})
 
     }
 
@@ -34,8 +45,10 @@ class FormularioSeries extends Component {
         e.preventDefault();
     
         let reader = new FileReader();
+        
         let file = e.target.files[0];
-    
+        console.log(file)
+        
         reader.onloadend = async () => {
           await this.setState({
             file: file,
@@ -45,6 +58,7 @@ class FormularioSeries extends Component {
     
         reader.readAsDataURL(file)
     }
+
 
     enviaDados = async (e) => {
         e.preventDefault()
@@ -74,7 +88,7 @@ class FormularioSeries extends Component {
                     Cadastro de Séries
                 </div>
                 <div className="card-body"> 
-                    <form method="post" onSubmit={this.enviaDados}>
+                    <form method="post" encType="multipart/form-data" onSubmit={this.enviaDados}>
                         <div className="form-group">
 
                             <label htmlFor="name">Nome</label>
@@ -120,13 +134,21 @@ class FormularioSeries extends Component {
                             <input 
                                 className="form-control mb-2" 
                                 type="file" 
+                                name="avatar"
+                                onChange={this.inputHandler} />
+
+
+                            {/* <input 
+                                className="form-control mb-2" 
+                                type="file" 
                                 placeholder="Escolher foto"
                                 accept="image/png, image/jpeg"
-                                onChange={(e)=>this._handleImageChange(e)} />
+                                onChange={(e)=>this._handleImageChange(e)} /> */}
 
                             {/* <div className="form-control imgPreview"> */}
                                 {$imagePreview}
                             {/* </div> */}
+                            
 
                             <button
                                 className="btn btn-success form-control mt-2"
@@ -135,6 +157,10 @@ class FormularioSeries extends Component {
                             </button>
                         </div>
                     </form>
+
+                    {/* <form method="post" enctype="multipart/form-data" onSubmit={this.enviaImage}>
+                        
+                    </form> */}
                     
                 </div>
             </div>
